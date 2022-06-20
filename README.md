@@ -15,6 +15,7 @@ String getHealthStatus(){ return name +" " + healthInfo; }
 }
 
 ---
+
 class Adult {
 int age;
 String healthInfo;
