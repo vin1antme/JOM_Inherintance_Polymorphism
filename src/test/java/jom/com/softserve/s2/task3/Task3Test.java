@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class Task3Test {
 
     final private static String PACKAGE = "jom.com.softserve.s2.task3.";
-/*
+
     @DisplayName("Check that Classes is present")
     @ParameterizedTest
     @MethodSource("listOfClasses")
@@ -185,6 +185,7 @@ public class Task3Test {
         List<Person> actual = null;
         try {
             actual = (List<Person>) new MyUtils().maxDuration((List) originList);
+            // System.out.println(new HashSet(expected).equals(new HashSet(actual)));  
             assertEquals(new HashSet(expected), new HashSet(actual));
         } catch (Exception e) {
             fail("Do not work correct with unique names");
@@ -211,6 +212,7 @@ public class Task3Test {
             actual = (List<Person>) new MyUtils().maxDuration((List) originList);
             assertEquals(new HashSet(expected), new HashSet(actual));
         } catch (Exception e) {
+            e.printStackTrace();
             fail("Do not work correct with duplicate student names");
         }
     }
@@ -283,6 +285,6 @@ public class Task3Test {
             fail("Content is null");
         }
     }
-    */
+
 }
 
