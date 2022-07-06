@@ -15,5 +15,9 @@ public class Circle extends Shape{
 
     public double getCircleArea() {
         return Math.PI * radius * radius;
-    }    
+    }
+    
+    public double getArea() {
+        return getCircleArea();
+    }
 }

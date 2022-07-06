@@ -22,4 +22,8 @@ public class Rectangle extends Shape{
     public double getRectangleArea(){
         return height * width;
     }
+
+    public double getArea() {
+        return getRectangleArea();
+    }
 }
