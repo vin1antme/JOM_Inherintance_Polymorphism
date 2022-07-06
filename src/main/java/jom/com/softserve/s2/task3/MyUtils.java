@@ -4,28 +4,21 @@ import java.util.*;
 
 public class MyUtils {
 
-    public static boolean isNullOrEmpty(final Collection<?> c) {
-        return c == null || c.isEmpty();
-    }
-
     public List<Person> maxDuration(List<Person> people) {
-
-        if (isNullOrEmpty(people))
-            return new ArrayList<Person>();
 
         List<Student> students = new ArrayList<>();
         List<Worker> workers = new ArrayList<>();
 
         for (Person person : people) {
             if (person != null) {
-                if (person.getClass().toString().endsWith("Student"))
+                if (person.getClass().getName() == Student.class.getName())
                     students.add((Student) person);
-                else if (person.getClass().toString().endsWith("Worker"))
+                else if (person.getClass().getName() == Worker.class.getName())
                     workers.add((Worker) person);
             }
         }
 
-        if (!isNullOrEmpty(students)) {
+        if (!students.isEmpty()) {
             int maxStudyDuration = Collections.max(students, new Comparator<Student>() {
                 @Override
                 public int compare(Student st1, Student st2) {
@@ -41,8 +34,8 @@ public class MyUtils {
             students.removeIf(s -> s.getStudyYears() != maxStudyDuration);
             students.removeIf(s -> !uniqueStudentNames.add(s.getName()));
         }
-
-        if (!isNullOrEmpty(workers)) {
+        
+        if (!workers.isEmpty()) {
             int maxExperienceDuration = Collections.max(workers, new Comparator<Worker>() {
                 @Override
                 public int compare(Worker st1, Worker st2) {
