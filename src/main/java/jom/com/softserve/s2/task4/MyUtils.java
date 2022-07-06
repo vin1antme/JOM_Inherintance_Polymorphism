@@ -6,80 +6,56 @@ import java.util.stream.Collectors;
 
 public class MyUtils {
 
-    public static boolean isNullOrEmpty(final Collection<?> c) {
-        return c == null || c.isEmpty();
-    }
-
     public List<Employee> largestEmployees(List<Employee> employees) {
-
-        if (MyUtils.isNullOrEmpty(employees))
-            return new ArrayList<Employee>();
 
         List<Employee> _employees = new ArrayList<>();
         List<Manager> _managers = new ArrayList<>();
 
         for (Employee employee : employees) {
             if (employee != null) {
-                if (employee.getClass().toString().endsWith("Employee"))
+                if (employee.getClass().getName() == Employee.class.getName())
                     _employees.add(employee);
-                else if (employee.getClass().toString().endsWith("Manager"))
+                else if (employee.getClass().getName() == Manager.class.getName())
                     _managers.add((Manager) employee);
             }
         }
 
+        Comparator<Employee> experienceComparator = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                if (e1.getExperience() > e2.getExperience())
+                    return 1;
+                else if (e1.getExperience() < e2.getExperience())
+                    return -1;
+                return 0;
+            }
+        };
+
+        Comparator<Employee> paymentComparator = new Comparator<Employee>() {
+            @Override
+            public int compare(Employee e1, Employee e2) {
+                return e1.getPayment().compareTo(e2.getPayment());
+            }
+        };
+
         if (!_employees.isEmpty()) {
-            int maxEmployeeExpirience = Collections.max(_employees, new Comparator<Employee>() {
-                @Override
-                public int compare(Employee e1, Employee e2) {
-                    if (e1.getExperience() > e2.getExperience())
-                        return 1;
-                    else if (e1.getExperience() < e2.getExperience())
-                        return -1;
-                    return 0;
-                }
-            }).getExperience();
-
-            BigDecimal maxEmployeePayment = Collections.max(_employees, new Comparator<Employee>() {
-                @Override
-                public int compare(Employee e1, Employee e2) {
-                    return e1.getPayment().compareTo(e2.getPayment());
-                }
-            }).getPayment();
-
+            int maxEmployeeExperience = Collections.max(_employees, experienceComparator).getExperience();
+            BigDecimal maxEmployeePayment = Collections.max(_employees, paymentComparator).getPayment();
             Set<String> uniqueEmployeeNames = new HashSet<>();
             _employees.removeIf(
-                    e -> !(e.getExperience() == maxEmployeeExpirience) && !(e.getPayment() == maxEmployeePayment));
+                    e -> !(e.getExperience() == maxEmployeeExperience) && !(e.getPayment() == maxEmployeePayment));
             _employees.removeIf(e -> !uniqueEmployeeNames.add(e.getName()));
         }
 
         if (!_managers.isEmpty()) {
-            int maxManagerExpirience = Collections.max(_managers, new Comparator<Manager>() {
-                @Override
-                public int compare(Manager e1, Manager e2) {
-                    if (e1.getExperience() > e2.getExperience())
-                        return 1;
-                    else if (e1.getExperience() < e2.getExperience())
-                        return -1;
-                    return 0;
-                }
-            }).getExperience();
-
-            BigDecimal maxManagerPayment = Collections.max(_managers, new Comparator<Manager>() {
-                @Override
-                public int compare(Manager e1, Manager e2) {
-                    return e1.getPayment().compareTo(e2.getPayment());
-                }
-            }).getPayment();
-
+            int maxManagerExperience = Collections.max(_managers, experienceComparator).getExperience();
+            BigDecimal maxManagerPayment = Collections.max(_managers, paymentComparator).getPayment();
             Set<String> uniqueManagerNames = new HashSet<>();
             _managers.removeIf(
-                    e -> !(e.getExperience() == maxManagerExpirience) && !(e.getPayment() == maxManagerPayment));
+                    e -> !(e.getExperience() == maxManagerExperience) && !(e.getPayment() == maxManagerPayment));
             _managers.removeIf(e -> !uniqueManagerNames.add(e.getName()));
         }
-
-        List<Employee> largeEmployees = new ArrayList<>();
-        largeEmployees.addAll(_employees);
-        largeEmployees.addAll(_managers);
-        return largeEmployees;
+        _employees.addAll(_managers);
+        return _employees;
     }
 }
