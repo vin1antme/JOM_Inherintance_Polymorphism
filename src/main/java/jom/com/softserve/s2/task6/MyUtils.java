@@ -40,22 +40,15 @@ public class MyUtils {
         }
 
         List<Shape> maxShapes = new ArrayList<>();
-        if (!circles.isEmpty()) {
+        for (int i = 0; i < rectangles.size(); i++) {
+            Rectangle nextRect = (Rectangle) rectangles.get(i);
+            if (!maxShapes.stream().map(r -> ((Rectangle) r).getHeight())
+                    .anyMatch(height -> height == nextRect.getHeight()))
+                maxShapes.add(nextRect);
+        }
+        if (!circles.isEmpty())
             maxShapes.add(circles.get(0));
-        }
 
-        if (rectangles.size() > 1) {
-            Rectangle firstRect = (Rectangle) rectangles.get(0);
-            maxShapes.add(firstRect);
-            for (int i = 1; i < rectangles.size(); i++) {
-                Rectangle nextRect = (Rectangle) rectangles.get(i);
-                if (nextRect.getHeight() != firstRect.getHeight()) {
-                    maxShapes.add(nextRect);
-                }
-            }
-        } else {
-            maxShapes.addAll(rectangles);
-        }
         return maxShapes;
     }
 
